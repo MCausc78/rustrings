@@ -424,4 +424,79 @@ mod tests {
 			filling: Some('_'),
 		}), "Hello world"); /* should not change */
 	}
+
+	#[test]
+	fn test_c_format() {
+		assert_eq!(c_format("Hello, %s!".to_string(),
+			vec![
+				CFormatArgument::String("world".to_string())
+			]
+		), "Hello, world!");
+		assert_eq!(c_format("My favorite number is %d.".to_string(),
+			vec![
+				CFormatArgument::Int32(42)
+			]
+		), "My favorite number is 42.");
+		assert_eq!(c_format("%-30s".to_string(),
+			vec![
+				CFormatArgument::String("Left aligned".to_string())
+			]
+		), "Left aligned                  ");
+		assert_eq!(c_format("%30s".to_string(),
+			vec![
+				CFormatArgument::String("Right aligned".to_string())
+			]
+		), "                 Right aligned");
+		assert_eq!(c_format("%*s".to_string(),
+			vec![
+				CFormatArgument::IntSize(-30),
+				CFormatArgument::String("Left aligned".to_string())
+			]
+		), "Left aligned                  ");
+		assert_eq!(c_format("int: %d; hex: %x %X; oct: %o".to_string(),
+			vec![
+				CFormatArgument::Int32(42),
+				CFormatArgument::UInt32(42),
+				CFormatArgument::UInt32(42),
+				CFormatArgument::UInt32(42),
+			]
+		), "int: 42; hex: 2a 2A; oct: 52");
+		assert_eq!(c_format("%c, %c, %c".to_string(),
+			vec![
+				CFormatArgument::Character('a'),
+				CFormatArgument::Character('b'),
+				CFormatArgument::Character('c'),
+			]
+		), "a, b, c");
+		assert_eq!(c_format("*%d*".to_string(),
+			vec![
+				CFormatArgument::Int32(959),
+			]
+		), "*959*");
+		assert_eq!(c_format("*%2d*".to_string(),
+			vec![
+				CFormatArgument::Int32(959),
+			]
+		), "*959*");
+		assert_eq!(c_format("*%10d*".to_string(),
+			vec![
+				CFormatArgument::Int32(959),
+			]
+		), "*       959*");
+		assert_eq!(c_format("*%-10d*".to_string(),
+			vec![
+				CFormatArgument::Int32(959),
+			]
+		), "*959       *");
+		
+		/*                   i8 %i8 =i8 */
+		assert_eq!(c_format("%d%%%d%c%d".to_string(),
+			vec![
+				CFormatArgument::Int32(14),
+				CFormatArgument::Int32(10),
+				CFormatArgument::Character('='),
+				CFormatArgument::Int32(4),
+			]
+		), "14%10=4");
+	}
 }

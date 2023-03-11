@@ -55,7 +55,10 @@ impl Base {
 /// ASCII case representation.
 #[derive(Debug)]
 pub enum Case {
+	/// Represents lower-case letters.
 	Lower,
+	
+	/// Represents upper-case letters.
 	Upper,
 }
 
@@ -167,8 +170,13 @@ pub fn itoa_unsigned(number: usize, base: Base, case: Case) -> String {
 /// Returned by `atoi_signed` and `atoi_unsigned` if parsing of string failed.
 #[derive(Debug, Clone, PartialEq)]
 pub enum ParseIntKind {
+	/// Empty string.
 	Empty,
+	
+	/// Invalid character in the start of string.
 	InvalidCharacter,
+	
+	/// Overflow.
 	Overflow,
 }
 
@@ -262,7 +270,7 @@ pub fn atoi_signed(
 	}
 }
 
-/// Converts string to number without sign, returning `Ok(isize)` if successfully parsed, otherwise returns `Err(ParseIntKind)` on error.
+/// Converts string to number without sign, returning `Ok(usize)` if successfully parsed, otherwise returns `Err(ParseIntKind)` on error.
 /// 
 /// # Examples
 /// 
@@ -373,5 +381,4 @@ macro_rules! atoi {
 	};
 }
 
-// #[allow(unused_imports)]
 pub use atoi;
