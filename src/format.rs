@@ -198,13 +198,283 @@ pub enum CFormatTypeSpecifier {
 	/// Represents character format specifier. (`c`)
 	Character,
 	
+	/// Represents decimal i8 format specifier. (`hhi`)
+	/// 
+	/// # Examples
+	/// 
+	/// ```
+	/// use rustrings::format::CFormatArgument;
+	/// use rustrings::format::c_format;
+	/// 
+	/// assert_eq!(c_format("%hhi".to_string(), vec![CFormatArgument::Int8(42i8)]), "42");
+	/// ```
+	ByteInt,
+	
+	/// Represents hexadecimal u8 format specifier. Uses lower-case letters. (`hhx`)
+	/// 
+	/// # Examples
+	/// 
+	/// ```
+	/// use rustrings::format::CFormatArgument;
+	/// use rustrings::format::c_format;
+	/// 
+	/// assert_eq!(c_format("%hhx".to_string(), vec![CFormatArgument::UInt8(42u8)]), "2a");
+	/// ```
+	ByteLowerHex,
+	
+	/// Represents hexadecimal u8 format specifier. Uses upper-case letters. (`hhX`)
+	/// 
+	/// # Examples
+	/// 
+	/// ```
+	/// use rustrings::format::CFormatArgument;
+	/// use rustrings::format::c_format;
+	/// 
+	/// assert_eq!(c_format("%hhX".to_string(), vec![CFormatArgument::UInt8(42u8)]), "2A");
+	/// ```
+	ByteUpperHex,
+	
+	/// Represents octal u8 format specifier. (`hho`)
+	/// 
+	/// # Examples
+	/// 
+	/// ```
+	/// use rustrings::format::CFormatArgument;
+	/// use rustrings::format::c_format;
+	/// 
+	/// assert_eq!(c_format("%hho".to_string(), vec![CFormatArgument::UInt8(42u8)]), "52");
+	/// ```
+	ByteOctal,
+	
+	/// Represents unsigned u8 format specifier. (`hhu`) 
+	/// 
+	/// # Examples
+	/// 
+	/// ```
+	/// use rustrings::format::CFormatArgument;
+	/// use rustrings::format::c_format;
+	/// 
+	/// assert_eq!(c_format("%hhu".to_string(), vec![CFormatArgument::UInt8(142)]), "142");
+	/// ```
+	ByteUnsigned,
+	
+	/// Represents decimal i16 format specifier. (`hi`)
+	/// 
+	/// # Examples
+	/// 
+	/// ```
+	/// use rustrings::format::CFormatArgument;
+	/// use rustrings::format::c_format;
+	/// 
+	/// assert_eq!(c_format("%hi".to_string(), vec![CFormatArgument::Int16(4242i16)]), "4242");
+	/// ```
+	ShortInt,
+	
+	/// Represents hexadecimal u16 format specifier. Uses lower-case letters. (`hx`)
+	/// 
+	/// # Examples
+	/// 
+	/// ```
+	/// use rustrings::format::CFormatArgument;
+	/// use rustrings::format::c_format;
+	/// 
+	/// assert_eq!(c_format("%hx".to_string(), vec![CFormatArgument::UInt16(4242u16)]), "1092");
+	/// assert_eq!(c_format("%hx".to_string(), vec![CFormatArgument::UInt16(42424u16)]), "a5b8");
+	/// ```
+	ShortLowerHex,
+	
+	/// Represents hexadecimal u16 format specifier. Uses upper-case letters. (`hX`)
+	/// 
+	/// # Examples
+	/// 
+	/// ```
+	/// use rustrings::format::CFormatArgument;
+	/// use rustrings::format::c_format;
+	/// 
+	/// assert_eq!(c_format("%hX".to_string(), vec![CFormatArgument::UInt16(4242u16)]), "1092");
+	/// assert_eq!(c_format("%hX".to_string(), vec![CFormatArgument::UInt16(42424u16)]), "A5B8");
+	/// ```
+	ShortUpperHex,
+	
+	/// Represents octal u16 format specifier. (`ho`)
+	/// 
+	/// # Examples
+	/// 
+	/// ```
+	/// use rustrings::format::CFormatArgument;
+	/// use rustrings::format::c_format;
+	/// 
+	/// assert_eq!(c_format("%ho".to_string(), vec![CFormatArgument::UInt16(4242u16)]), "10222");
+	/// assert_eq!(c_format("%ho".to_string(), vec![CFormatArgument::UInt16(42424u16)]), "122670");
+	/// ```
+	ShortOctal,
+	
+	/// Represents decimal i16 format specifier. (`hu`)
+	/// 
+	/// # Examples
+	/// 
+	/// ```
+	/// use rustrings::format::CFormatArgument;
+	/// use rustrings::format::c_format;
+	/// 
+	/// assert_eq!(c_format("%hu".to_string(), vec![CFormatArgument::UInt16(4242u16)]), "4242");
+	/// assert_eq!(c_format("%hu".to_string(), vec![CFormatArgument::UInt16(42424u16)]), "42424");
+	/// ```
+	ShortUnsigned,
+	
+	/// Represents decimal isize format specifier. (`li`, `ld`)
+	/// 
+	/// # Examples
+	/// 
+	/// ```
+	/// use rustrings::format::CFormatArgument;
+	/// use rustrings::format::c_format;
+	/// 
+	/// assert_eq!(c_format("%li".to_string(), vec![CFormatArgument::IntSize(6369051672839409isize)]), "6369051672839409");
+	/// assert_eq!(c_format("%ld".to_string(), vec![CFormatArgument::IntSize(10465892101isize)]), "10465892101");
+	/// ```
+	LongInt,
+	
+	/// Represents hexadecimal usize format specifier. Uses lower-case letters. (`lx`)
+	/// 
+	/// # Examples
+	/// 
+	/// ```
+	/// use rustrings::format::CFormatArgument;
+	/// use rustrings::format::c_format;
+	/// 
+	/// assert_eq!(c_format("%lx".to_string(), vec![CFormatArgument::UIntSize(6369051672839409usize)]), "16a09e668404f1");
+	/// assert_eq!(c_format("%lx".to_string(), vec![CFormatArgument::UIntSize(10465892101usize)]), "26fd0d705");
+	/// ```
+	LongLowerHex,
+	
+	/// Represents hexadecimal usize format specifier. Uses upper-case letters. (`lX`)
+	/// 
+	/// # Examples
+	/// 
+	/// ```
+	/// use rustrings::format::CFormatArgument;
+	/// use rustrings::format::c_format;
+	/// 
+	/// assert_eq!(c_format("%lX".to_string(), vec![CFormatArgument::UIntSize(6369051672839409usize)]), "16A09E668404F1");
+	/// assert_eq!(c_format("%lX".to_string(), vec![CFormatArgument::UIntSize(10465892101usize)]), "26FD0D705");
+	/// ```
+	LongUpperHex,
+	
+	/// Represents octal usize format specifier. (`lo`)
+	/// 
+	/// # Examples
+	/// 
+	/// ```
+	/// use rustrings::format::CFormatArgument;
+	/// use rustrings::format::c_format;
+	/// 
+	/// assert_eq!(c_format("%lo".to_string(), vec![CFormatArgument::UIntSize(6369051672839409usize)]), "265011714641002361");
+	/// assert_eq!(c_format("%lo".to_string(), vec![CFormatArgument::UIntSize(10465892101usize)]), "115764153405");
+	/// ```
+	LongOctal,
+	
+	/// Represents decimal usize format specifier. (`lu`)
+	/// 
+	/// # Examples
+	/// 
+	/// ```
+	/// use rustrings::format::CFormatArgument;
+	/// use rustrings::format::c_format;
+	/// 
+	/// assert_eq!(c_format("%lu".to_string(), vec![CFormatArgument::UIntSize(6369051672839409usize)]), "6369051672839409");
+	/// assert_eq!(c_format("%lu".to_string(), vec![CFormatArgument::UIntSize(10465892101usize)]), "10465892101");
+	/// ```
+	LongUnsigned,
+	
+	/// Represents decimal i64 format specifier. (`lli`, `lld`)
+	/// 
+	/// # Examples
+	/// 
+	/// ```
+	/// use rustrings::format::CFormatArgument;
+	/// use rustrings::format::c_format;
+	/// 
+	/// assert_eq!(c_format("%lld".to_string(), vec![CFormatArgument::Int64(81985529216486895i64)]), "81985529216486895");
+	/// assert_eq!(c_format("%lli".to_string(), vec![CFormatArgument::Int64(81985529216486895i64)]), "81985529216486895");
+	/// ```
+	LongLongInt,
+	
+	/// Represents hexadecimal u64 format specifier. Uses lower-case letters. (`llx`)
+	/// 
+	/// # Examples
+	/// 
+	/// ```
+	/// use rustrings::format::CFormatArgument;
+	/// use rustrings::format::c_format;
+	/// 
+	/// assert_eq!(c_format("%llx".to_string(), vec![CFormatArgument::UInt64(81985529216486895u64)]), "123456789abcdef");
+	/// assert_eq!(c_format("%llx".to_string(), vec![CFormatArgument::UInt64(13464654573299691533u64)]), "badc0ffee0ddf00d");
+	/// ```
+	LongLongLowerHex,
+	
+	/// Represents hexadecimal u64 format specifier. Uses upper-case letters. (`llX`)
+	/// 
+	/// # Examples
+	/// 
+	/// ```
+	/// use rustrings::format::CFormatArgument;
+	/// use rustrings::format::c_format;
+	/// 
+	/// assert_eq!(c_format("%llX".to_string(), vec![CFormatArgument::UInt64(81985529216486895u64)]), "123456789ABCDEF");
+	/// assert_eq!(c_format("%llX".to_string(), vec![CFormatArgument::UInt64(13464654573299691533u64)]), "BADC0FFEE0DDF00D");
+	/// ```
+	LongLongUpperHex,
+	
+	/// Represents octal u64 format specifier. (`llo`)
+	/// 
+	/// # Examples
+	/// 
+	/// ```
+	/// use rustrings::format::CFormatArgument;
+	/// use rustrings::format::c_format;
+	/// 
+	/// assert_eq!(c_format("%llo".to_string(), vec![CFormatArgument::UInt64(13464654573299691533u64)]), "1353340377734067370015");
+	/// ```
+	LongLongOctal,
+	
+	/// Represents decimal u64 format specifier. (`llu`)
+	/// 
+	/// # Examples
+	/// 
+	/// ```
+	/// use rustrings::format::CFormatArgument;
+	/// use rustrings::format::c_format;
+	/// 
+	/// assert_eq!(c_format("%llu".to_string(), vec![CFormatArgument::UInt64(13464654573299691533u64)]), "13464654573299691533");
+	/// ```
+	LongLongUnsigned,
+	
 	/// Represents string format specifier. (`s`)
+	/// 
+	/// # Examples
+	/// 
+	/// ```
+	/// use rustrings::format::CFormatArgument;
+	/// use rustrings::format::c_format;
+	/// 
+	/// assert_eq!(c_format("hello, %s!".to_string(), vec![CFormatArgument::String("world".to_string())]), "hello, world!");
+	/// ```
 	String,
 	
 	/// Represents pointer format specifier. (`p`)
 	Pointer,
 	
 	/// Represents escape of modulo operator (`%`) specifier. (`%`)
+	/// 
+	/// # Examples
+	/// 
+	/// ```
+	/// use rustrings::format::CFormatArgument;
+	/// use rustrings::format::c_format;
+	/// 
+	/// assert_eq!(c_format("%d%%".to_string(), vec![CFormatArgument::Int32(42)]), "42%");
+	/// ```
 	Escape,
 	
 	/// Represents none of above specifiers.
@@ -314,6 +584,74 @@ pub fn c_format(
 			let type_specifier = match character {
 				'c' => CFormatTypeSpecifier::Character,
 				'd' | 'i' => CFormatTypeSpecifier::Integer,
+				'h' => {
+					character = if let Some(temp) = format_iterator.next() {
+						temp
+					} else {
+						return result
+					};
+					match character {
+						'h' => {
+							character = if let Some(temp) = format_iterator.next() {
+								temp
+							} else {
+								return result
+							};
+							match character {
+								'd' | 'i' => CFormatTypeSpecifier::ByteInt,
+								'x' => CFormatTypeSpecifier::ByteLowerHex,
+								'X' => CFormatTypeSpecifier::ByteUpperHex,
+								'u' => CFormatTypeSpecifier::ByteUnsigned,
+								'o' => CFormatTypeSpecifier::ByteOctal,
+								_ => {
+									return result
+								},
+							}
+						},
+						'd' | 'i' => CFormatTypeSpecifier::ShortInt,
+						'x' => CFormatTypeSpecifier::ShortLowerHex,
+						'X' => CFormatTypeSpecifier::ShortUpperHex,
+						'u' => CFormatTypeSpecifier::ShortUnsigned,
+						'o' => CFormatTypeSpecifier::ShortOctal,
+						_ => {
+							return result
+						},
+					}
+				},
+				'l' => {
+					character = if let Some(temp) = format_iterator.next() {
+						temp
+					} else {
+						return result
+					};
+					match character {
+						'l' => {
+							character = if let Some(temp) = format_iterator.next() {
+								temp
+							} else {
+								return result
+							};
+							match character {
+								'd' | 'i' => CFormatTypeSpecifier::LongLongInt,
+								'x' => CFormatTypeSpecifier::LongLongLowerHex,
+								'X' => CFormatTypeSpecifier::LongLongUpperHex,
+								'u' => CFormatTypeSpecifier::LongLongUnsigned,
+								'o' => CFormatTypeSpecifier::LongLongOctal,
+								_ => {
+									return result
+								},
+							}
+						},
+						'd' | 'i' => CFormatTypeSpecifier::LongInt,
+						'x' => CFormatTypeSpecifier::LongLowerHex,
+						'X' => CFormatTypeSpecifier::LongUpperHex,
+						'u' => CFormatTypeSpecifier::LongUnsigned,
+						'o' => CFormatTypeSpecifier::LongOctal,
+						_ => {
+							return result
+						},
+					}
+				},
 				'o' => CFormatTypeSpecifier::Octal,
 				'u' => CFormatTypeSpecifier::Unsigned,
 				'x' => CFormatTypeSpecifier::LowerHex,
@@ -357,6 +695,126 @@ pub fn c_format(
 					}, Base::new(16), Case::Lower), options).as_str()),
 				CFormatTypeSpecifier::UpperHex => result.push_str(&format_text(&itoa_unsigned(
 					if let CFormatArgument::UInt32(temp) = args_iterator.next().unwrap() {
+						*temp as usize
+					} else {
+						return result
+					}, Base::new(16), Case::Upper), options).as_str()),
+				CFormatTypeSpecifier::LongInt => result.push_str(&format_text(&itoa_signed(
+					if let CFormatArgument::IntSize(temp) = args_iterator.next().unwrap() {
+						*temp as isize
+					} else {
+						return result
+					}, Base::new(10), Case::Lower), options).as_str()),
+				CFormatTypeSpecifier::LongOctal => result.push_str(&format_text(&itoa_unsigned(
+					if let CFormatArgument::UIntSize(temp) = args_iterator.next().unwrap() {
+						*temp as usize
+					} else {
+						return result
+					}, Base::new(8), Case::Lower), options).as_str()),
+				CFormatTypeSpecifier::LongUnsigned => result.push_str(&format_text(&itoa_unsigned(
+					if let CFormatArgument::UIntSize(temp) = args_iterator.next().unwrap() {
+						*temp
+					} else {
+						return result
+					}, Base::new(10), Case::Lower), options).as_str()),
+				CFormatTypeSpecifier::LongLowerHex => result.push_str(&format_text(&itoa_unsigned(
+					if let CFormatArgument::UIntSize(temp) = args_iterator.next().unwrap() {
+						*temp
+					} else {
+						return result
+					}, Base::new(16), Case::Lower), options).as_str()),
+				CFormatTypeSpecifier::LongUpperHex => result.push_str(&format_text(&itoa_unsigned(
+					if let CFormatArgument::UIntSize(temp) = args_iterator.next().unwrap() {
+						*temp
+					} else {
+						return result
+					}, Base::new(16), Case::Upper), options).as_str()),
+				CFormatTypeSpecifier::LongLongInt => result.push_str(&format_text(&itoa_signed(
+					if let CFormatArgument::Int64(temp) = args_iterator.next().unwrap() {
+						*temp as isize
+					} else {
+						return result
+					}, Base::new(10), Case::Lower), options).as_str()),
+				CFormatTypeSpecifier::LongLongOctal => result.push_str(&format_text(&itoa_unsigned(
+					if let CFormatArgument::UInt64(temp) = args_iterator.next().unwrap() {
+						*temp as usize
+					} else {
+						return result
+					}, Base::new(8), Case::Lower), options).as_str()),
+				CFormatTypeSpecifier::LongLongUnsigned => result.push_str(&format_text(&itoa_unsigned(
+					if let CFormatArgument::UInt64(temp) = args_iterator.next().unwrap() {
+						*temp as usize
+					} else {
+						return result
+					}, Base::new(10), Case::Lower), options).as_str()),
+				CFormatTypeSpecifier::LongLongLowerHex => result.push_str(&format_text(&itoa_unsigned(
+					if let CFormatArgument::UInt64(temp) = args_iterator.next().unwrap() {
+						*temp as usize
+					} else {
+						return result
+					}, Base::new(16), Case::Lower), options).as_str()),
+				CFormatTypeSpecifier::LongLongUpperHex => result.push_str(&format_text(&itoa_unsigned(
+					if let CFormatArgument::UInt64(temp) = args_iterator.next().unwrap() {
+						*temp as usize
+					} else {
+						return result
+					}, Base::new(16), Case::Upper), options).as_str()),
+				CFormatTypeSpecifier::ShortInt => result.push_str(&format_text(&itoa_signed(
+					if let CFormatArgument::Int16(temp) = args_iterator.next().unwrap() {
+						*temp as isize
+					} else {
+						return result
+					}, Base::new(10), Case::Lower), options).as_str()),
+				CFormatTypeSpecifier::ShortOctal => result.push_str(&format_text(&itoa_unsigned(
+					if let CFormatArgument::UInt16(temp) = args_iterator.next().unwrap() {
+						*temp as usize
+					} else {
+						return result
+					}, Base::new(8), Case::Lower), options).as_str()),
+				CFormatTypeSpecifier::ShortUnsigned => result.push_str(&format_text(&itoa_unsigned(
+					if let CFormatArgument::UInt16(temp) = args_iterator.next().unwrap() {
+						*temp as usize
+					} else {
+						return result
+					}, Base::new(10), Case::Lower), options).as_str()),
+				CFormatTypeSpecifier::ShortLowerHex => result.push_str(&format_text(&itoa_unsigned(
+					if let CFormatArgument::UInt16(temp) = args_iterator.next().unwrap() {
+						*temp as usize
+					} else {
+						return result
+					}, Base::new(16), Case::Lower), options).as_str()),
+				CFormatTypeSpecifier::ShortUpperHex => result.push_str(&format_text(&itoa_unsigned(
+					if let CFormatArgument::UInt16(temp) = args_iterator.next().unwrap() {
+						*temp as usize
+					} else {
+						return result
+					}, Base::new(16), Case::Upper), options).as_str()),
+				CFormatTypeSpecifier::ByteInt => result.push_str(&format_text(&itoa_signed(
+					if let CFormatArgument::Int8(temp) = args_iterator.next().unwrap() {
+						*temp as isize
+					} else {
+						return result
+					}, Base::new(10), Case::Lower), options).as_str()),
+				CFormatTypeSpecifier::ByteOctal => result.push_str(&format_text(&itoa_unsigned(
+					if let CFormatArgument::UInt8(temp) = args_iterator.next().unwrap() {
+						*temp as usize
+					} else {
+						return result
+					}, Base::new(8), Case::Lower), options).as_str()),
+				CFormatTypeSpecifier::ByteUnsigned => result.push_str(&format_text(&itoa_unsigned(
+					if let CFormatArgument::UInt8(temp) = args_iterator.next().unwrap() {
+						*temp as usize
+					} else {
+						return result
+					}, Base::new(10), Case::Lower), options).as_str()),
+				CFormatTypeSpecifier::ByteLowerHex => result.push_str(&format_text(&itoa_unsigned(
+					if let CFormatArgument::UInt8(temp) = args_iterator.next().unwrap() {
+						*temp as usize
+					} else {
+						return result
+					}, Base::new(16), Case::Lower), options).as_str()),
+				CFormatTypeSpecifier::ByteUpperHex => result.push_str(&format_text(&itoa_unsigned(
+					if let CFormatArgument::UInt8(temp) = args_iterator.next().unwrap() {
 						*temp as usize
 					} else {
 						return result
